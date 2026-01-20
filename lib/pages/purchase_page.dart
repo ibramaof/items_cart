@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:user_purchase/components/add_dial_box.dart';
 import 'package:user_purchase/components/approve_dial_box.dart';
 import 'package:user_purchase/components/buttons.dart';
@@ -12,6 +13,7 @@ class PurchasePage extends StatefulWidget {
 }
 
 class _PurchasePageState extends State<PurchasePage> {
+  final _myBox = Hive.box('MY_BOX');
   final _controller = TextEditingController();
   final user_controller = TextEditingController();
   final password_controller = TextEditingController();
@@ -26,10 +28,17 @@ class _PurchasePageState extends State<PurchasePage> {
   List itemsData = ['Apple', 'Orange', 'Banana', 'Tomatos'];
   void onAdd() {
     setState(() {
+      // load data and check if empty
       items.add([itemName, int.parse(_controller.text)]);
     });
+    saveToDatabase();
     _controller.clear();
     Navigator.pop(context);
+  }
+
+  //save to database
+  void saveToDatabase() {
+    _myBox.put("ITEMS_LIST", items);
   }
 
   void addItemm() {
@@ -62,6 +71,12 @@ class _PurchasePageState extends State<PurchasePage> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    items = _myBox.get('ITEMS_LIST') ?? [];
+    super.initState();
   }
 
   @override
