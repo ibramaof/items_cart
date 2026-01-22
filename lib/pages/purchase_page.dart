@@ -82,8 +82,19 @@ class _PurchasePageState extends State<PurchasePage> {
 
   @override
   void initState() {
+    // load data and check if null
     items = _myBox.get('ITEMS_LIST') ?? [];
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    user_controller.dispose();
+    password_controller.dispose();
+    super.dispose();
+
+    super.dispose();
   }
 
   @override
