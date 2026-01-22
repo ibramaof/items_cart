@@ -17,7 +17,8 @@ class _PurchasePageState extends State<PurchasePage> {
   final _controller = TextEditingController();
   final user_controller = TextEditingController();
   final password_controller = TextEditingController();
-  String itemName = 'apple';
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String itemName = 'Apple';
   void onSelected(dynamic value) {
     setState(() {
       itemName = value;
@@ -27,9 +28,12 @@ class _PurchasePageState extends State<PurchasePage> {
   List items = [];
   List itemsData = ['Apple', 'Orange', 'Banana', 'Tomatos'];
   void onAdd() {
+    if (_controller.text.trim().isEmpty) return;
+    final qty = int.tryParse(_controller.text);
+    if (qty == null) return;
+
     setState(() {
-      // load data and check if empty
-      items.add([itemName, int.parse(_controller.text)]);
+      items.add([itemName, qty]);
     });
     saveToDatabase();
     _controller.clear();
@@ -61,12 +65,15 @@ class _PurchasePageState extends State<PurchasePage> {
       context: context,
       builder: (context) {
         return ApproveUserBox(
+          formKey: formKey,
           userController: user_controller,
           passwordConttoller: password_controller,
           onAdd: () {
-            user_controller.clear();
-            password_controller.clear();
-            Navigator.pop(context);
+            if (formKey.currentState!.validate()) {
+              user_controller.clear();
+              password_controller.clear();
+              Navigator.pop(context);
+            }
           },
         );
       },

@@ -5,12 +5,14 @@ import 'package:user_purchase/components/buttons.dart';
 class ApproveUserBox extends StatelessWidget {
   final TextEditingController userController;
   final TextEditingController passwordConttoller;
+  final GlobalKey<FormState> formKey;
   VoidCallback onAdd;
   ApproveUserBox({
     super.key,
     required this.userController,
     required this.passwordConttoller,
     required this.onAdd,
+    required this.formKey,
   });
 
   @override
@@ -19,45 +21,63 @@ class ApproveUserBox extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       content: Container(
         width: 300,
-        height: 202,
+        height: 300,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                child: TextField(
-                  controller: userController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person_2_outlined),
-                    labelText: 'username',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: SizedBox(
-                  child: TextField(
-                    controller: passwordConttoller,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Email required";
+                      }
+                      return null;
+                    },
+                    controller: userController,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.password_outlined),
-                      labelText: 'password',
+                      prefixIcon: Icon(Icons.person_2_outlined),
+                      labelText: 'username',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [Buttons(buttonName: 'Add', onPressed: onAdd)],
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "password required";
+                        }
+                        return null;
+                      },
+                      controller: passwordConttoller,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
+                        labelText: 'password',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Buttons(buttonName: 'Approve', onPressed: onAdd),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
