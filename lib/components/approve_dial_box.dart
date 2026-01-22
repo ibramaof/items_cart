@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:user_purchase/components/buttons.dart';
 
 // ignore: must_be_immutable
-class ApproveUserBox extends StatelessWidget {
+class ApproveUserBox extends StatefulWidget {
   final TextEditingController userController;
   final TextEditingController passwordConttoller;
   final GlobalKey<FormState> formKey;
   VoidCallback onAdd;
+  bool isPasswordShown = true;
   ApproveUserBox({
     super.key,
+
     required this.userController,
     required this.passwordConttoller,
     required this.onAdd,
     required this.formKey,
   });
 
+  @override
+  State<ApproveUserBox> createState() => _ApproveUserBoxState();
+}
+
+class _ApproveUserBoxState extends State<ApproveUserBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -25,7 +32,7 @@ class ApproveUserBox extends StatelessWidget {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: Center(
           child: Form(
-            key: formKey,
+            key: widget.formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -37,7 +44,7 @@ class ApproveUserBox extends StatelessWidget {
                       }
                       return null;
                     },
-                    controller: userController,
+                    controller: widget.userController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person_2_outlined),
@@ -56,11 +63,23 @@ class ApproveUserBox extends StatelessWidget {
                         }
                         return null;
                       },
-                      controller: passwordConttoller,
+                      controller: widget.passwordConttoller,
                       keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: widget.isPasswordShown,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              widget.isPasswordShown = !widget.isPasswordShown;
+                            });
+                          },
+                          icon: Icon(
+                            widget.isPasswordShown
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                        ),
                         labelText: 'password',
                         border: OutlineInputBorder(),
                       ),
@@ -72,7 +91,7 @@ class ApproveUserBox extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Buttons(buttonName: 'Approve', onPressed: onAdd),
+                      Buttons(buttonName: 'Approve', onPressed: widget.onAdd),
                     ],
                   ),
                 ),

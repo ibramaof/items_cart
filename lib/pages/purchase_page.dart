@@ -18,6 +18,7 @@ class _PurchasePageState extends State<PurchasePage> {
   final user_controller = TextEditingController();
   final password_controller = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isPasswordShown = true;
   String itemName = 'Apple';
   void onSelected(dynamic value) {
     setState(() {
