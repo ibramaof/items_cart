@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:user_purchase/components/buttons.dart';
+import 'package:user_purchase/models/cart_item.dart';
 
 // ignore: must_be_immutable
 class AddDialBox extends StatelessWidget {
-  final List items;
-  VoidCallback onAdd;
-  void Function(dynamic) onSelected;
-  final String itemName;
-
+  final List<CartItem> items;
   final TextEditingController controller;
+  final String selectedItem;
+  final void Function(String) onSelected;
+  final VoidCallback onAdd;
 
-  AddDialBox({
+  const AddDialBox({
     super.key,
     required this.items,
-    required this.onAdd,
     required this.controller,
+    required this.selectedItem,
     required this.onSelected,
-    required this.itemName,
+    required this.onAdd,
   });
 
   @override
@@ -29,9 +29,9 @@ class AddDialBox extends StatelessWidget {
           child: Column(
             children: [
               DropdownMenu(
-                label: Text("items"),
-                initialSelection: "apple",
-                onSelected: onSelected,
+                label: Text("item1"),
+                initialSelection: "item1",
+                onSelected: (value) => onSelected(value!),
                 menuStyle: MenuStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.grey[200]),
                   elevation: WidgetStateProperty.all(6),
@@ -42,7 +42,12 @@ class AddDialBox extends StatelessWidget {
                   ),
                 ),
                 dropdownMenuEntries: items
-                    .map((item) => DropdownMenuEntry(value: item, label: item))
+                    .map(
+                      (item) => DropdownMenuEntry(
+                        value: item.itemName,
+                        label: item.itemName,
+                      ),
+                    )
                     .toList(),
               ),
               Row(

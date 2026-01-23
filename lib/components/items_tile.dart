@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:user_purchase/models/cart_item.dart';
 
-class ItemsTile extends StatelessWidget {
-  final String itemName;
-  final int itemQty;
-  const ItemsTile({super.key, required this.itemName, required this.itemQty});
+// ignore: must_be_immutable
+class CartItemTail extends StatelessWidget {
+  CartItem cart;
+  void Function()? onPressed;
+  CartItemTail({super.key, required this.cart, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(itemName, style: TextStyle(fontSize: 20)),
-          Text(itemQty.toString(), style: TextStyle(fontSize: 20)),
-        ],
+    return Container(
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        title: Text(cart.itemName),
+        subtitle: Text("\$${cart.itemQty}"),
+        trailing: IconButton(onPressed: onPressed, icon: Icon(Icons.delete)),
       ),
     );
   }
