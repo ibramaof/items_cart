@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:user_purchase/features/finished_items/models/finished_item_model.dart';
 
-class Cart extends ChangeNotifier {
+class ItemsTOAddToFinishedItems {
   // menu items list
   List<FinishedItemModel> menuItems = [
     FinishedItemModel(
@@ -37,29 +36,4 @@ class Cart extends ChangeNotifier {
       itemQty: '1',
     ),
   ];
-
-  //user cart items list
-  List<FinishedItemModel> userCartItems = [];
-
-  //get menu items list
-  List<FinishedItemModel> getMenuItems() {
-    return menuItems;
-  }
-
-  //get user cart items list
-  List<FinishedItemModel> getUserCartItems() {
-    return userCartItems;
-  }
-
-  //add item to user cart
-  void addItemToCart(FinishedItemModel item) {
-    userCartItems.add(item);
-    notifyListeners();
-  }
-
-  //delete item from user cart
-  void deleteItemFromCart(FinishedItemModel item) {
-    userCartItems.remove(item);
-    notifyListeners();
-  }
 }
