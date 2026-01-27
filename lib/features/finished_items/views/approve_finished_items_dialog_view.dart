@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:user_purchase/components/buttons.dart';
+import 'package:user_purchase/core/shared_widgets/buttons.dart';
+import 'package:user_purchase/core/theme/colors.dart';
 
 // ignore: must_be_immutable
 class ApproveUserBox extends StatefulWidget {
@@ -25,12 +26,13 @@ class _ApproveUserBoxState extends State<ApproveUserBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: kWhiteColor,
       content: Container(
         width: 300,
-        height: 300,
+
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(top: 15),
           child: Form(
             key: widget.formKey,
             child: Column(
@@ -47,14 +49,20 @@ class _ApproveUserBoxState extends State<ApproveUserBox> {
                     controller: widget.userController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person_2_outlined),
-                      labelText: 'username',
-                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(
+                        Icons.alternate_email,
+                        color: Color.fromARGB(255, 124, 85, 142),
+                      ),
+                      labelText: 'Email',
+                      hintText: "name@example.com",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 15),
                   child: SizedBox(
                     child: TextFormField(
                       validator: (value) {
@@ -67,7 +75,10 @@ class _ApproveUserBoxState extends State<ApproveUserBox> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: widget.isPasswordShown,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Color.fromARGB(255, 124, 85, 142),
+                        ),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -78,20 +89,28 @@ class _ApproveUserBoxState extends State<ApproveUserBox> {
                             widget.isPasswordShown
                                 ? Icons.visibility
                                 : Icons.visibility_off,
+                            color: Color.fromARGB(255, 124, 85, 142),
                           ),
                         ),
                         labelText: 'password',
-                        border: OutlineInputBorder(),
+                        hintText: '********',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Buttons(buttonName: 'Approve', onPressed: widget.onAdd),
+                      MyGradientButton(
+                        isSecondary: false,
+                        label: 'Approve',
+                        onPressed: widget.onAdd,
+                      ),
                     ],
                   ),
                 ),

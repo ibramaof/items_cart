@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:user_purchase/components/buttons.dart';
-import 'package:user_purchase/models/cart_item.dart';
+import 'package:user_purchase/core/shared_widgets/buttons.dart';
+import 'package:user_purchase/features/finished_items/models/finished_item_model.dart';
+import 'package:user_purchase/core/theme/colors.dart';
 
 // ignore: must_be_immutable
 class AddDialBox extends StatelessWidget {
-  final List<CartItem> items;
+  final List<FinishedItemModel> items;
   final TextEditingController controller;
   final String selectedItem;
   final void Function(String) onSelected;
@@ -22,18 +23,25 @@ class AddDialBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.grey[200],
-      content: SizedBox(
-        height: 202,
-        child: Center(
+      backgroundColor: kWhiteColor,
+      content: Padding(
+        padding: const EdgeInsetsDirectional.only(top: 15),
+        child: SizedBox(
+          // height: 202,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               DropdownMenu(
-                label: Text("item1"),
-                initialSelection: "item1",
+                label: Text(
+                  "Items",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                initialSelection:
+                    "1010001 - Osoul | Fresh chicken Skinlese 900 gm",
                 onSelected: (value) => onSelected(value!),
                 menuStyle: MenuStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.grey[200]),
+                  backgroundColor: WidgetStateProperty.all(kWhiteColor),
                   elevation: WidgetStateProperty.all(6),
                   shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
@@ -54,14 +62,14 @@ class AddDialBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 15),
                     child: SizedBox(
                       width: 100,
                       child: TextField(
                         controller: controller,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'Qty',
+                          labelText: 'Quantity',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -70,10 +78,16 @@ class AddDialBox extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [Buttons(buttonName: 'Add', onPressed: onAdd)],
+                  children: [
+                    MyGradientButton(
+                      isSecondary: false,
+                      label: 'Add',
+                      onPressed: onAdd,
+                    ),
+                  ],
                 ),
               ),
             ],

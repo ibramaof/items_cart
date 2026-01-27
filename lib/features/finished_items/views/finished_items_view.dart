@@ -2,27 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:user_purchase/components/add_dial_box.dart';
-import 'package:user_purchase/components/approve_dial_box.dart';
-import 'package:user_purchase/components/buttons.dart';
-import 'package:user_purchase/components/items_tile.dart';
-import 'package:user_purchase/models/cart_item.dart';
-import 'package:user_purchase/models/items_data.dart';
+import 'package:user_purchase/features/finished_items/views/add_finished_items_dialog_view.dart';
+import 'package:user_purchase/features/finished_items/views/approve_finished_items_dialog_view.dart';
+import 'package:user_purchase/core/shared_widgets/buttons.dart';
+import 'package:user_purchase/features/finished_items/views/finished_items_details_view.dart';
+import 'package:user_purchase/features/finished_items/models/finished_item_model.dart';
+import 'package:user_purchase/features/finished_items/models/items_to_add_to_finished_items.dart';
+import 'package:user_purchase/core/theme/colors.dart';
 
-class PurchasePage extends StatefulWidget {
-  const PurchasePage({super.key});
+class FinishedItemsView extends StatefulWidget {
+  const FinishedItemsView({super.key});
 
   @override
-  State<PurchasePage> createState() => _PurchasePageState();
+  State<FinishedItemsView> createState() => _FinishedItemsViewState();
 }
 
-class _PurchasePageState extends State<PurchasePage> {
+class _FinishedItemsViewState extends State<FinishedItemsView> {
   final _controller = TextEditingController();
   final user_controller = TextEditingController();
   final password_controller = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isPasswordShown = true;
-  String itemName = 'item1';
+  String itemName = '1010001 - Osoul | Fresh chicken Skinlese 900 gm';
   void onSelected(dynamic value) {
     setState(() {
       itemName = value;
@@ -48,7 +49,10 @@ class _PurchasePageState extends State<PurchasePage> {
   void onAdd() {
     if (_controller.text.trim().isEmpty) return;
     final qty = _controller.text.trim();
-    CartItem cartItem = CartItem(itemName: itemName, itemQty: qty);
+    FinishedItemModel cartItem = FinishedItemModel(
+      itemName: itemName,
+      itemQty: qty,
+    );
     Provider.of<Cart>(context, listen: false).addItemToCart(cartItem);
     _controller.clear();
     Navigator.pop(context);
@@ -83,7 +87,7 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   //delete item from cart
-  void deleteItem(CartItem item) {
+  void deleteItem(FinishedItemModel item) {
     Provider.of<Cart>(context, listen: false).deleteItemFromCart(item);
   }
 
@@ -91,39 +95,56 @@ class _PurchasePageState extends State<PurchasePage> {
   Widget build(BuildContext context) {
     return Consumer<Cart>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(),
+        backgroundColor: kWhiteColor,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Center(
+            child: Text(
+              'Finished Items',
+
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: kWhiteColor,
+              ),
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [kSecondaryColor, kPrimaryColor],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+          ),
+        ),
         body: Column(
           children: [
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Buttons(buttonName: 'Add', onPressed: onPressedAddButton),
-                Buttons(buttonName: 'Approve', onPressed: approveUser),
+                MyGradientButton(label: 'Add', onPressed: onPressedAddButton),
+                SizedBox(width: 16),
+                MyGradientButton(label: 'Approve', onPressed: approveUser),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
-              child: Container(
-                color: Colors.grey[200],
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text('Items', style: TextStyle(fontSize: 20)),
-                      Text('Qty', style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+
+            SizedBox(height: 30),
+
             Expanded(
               child: ListView.builder(
                 itemCount: value.userCartItems.length,
                 itemBuilder: (context, index) {
-                  CartItem cart = value.getUserCartItems()[index];
+                  FinishedItemModel cart = value.getUserCartItems()[index];
 
-                  return CartItemTail(
+                  return FinishedItemsDetaile(
                     cart: cart,
                     onPressed: () => deleteItem(cart),
                   );
