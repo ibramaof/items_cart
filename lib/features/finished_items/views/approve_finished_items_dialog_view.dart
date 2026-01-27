@@ -7,14 +7,14 @@ class ApproveUserBox extends StatefulWidget {
   final TextEditingController userController;
   final TextEditingController passwordConttoller;
   final GlobalKey<FormState> formKey;
-  VoidCallback onAdd;
+  VoidCallback onApprove;
   bool isPasswordShown = true;
   ApproveUserBox({
     super.key,
 
     required this.userController,
     required this.passwordConttoller,
-    required this.onAdd,
+    required this.onApprove,
     required this.formKey,
   });
 
@@ -109,7 +109,7 @@ class _ApproveUserBoxState extends State<ApproveUserBox> {
                       MyGradientButton(
                         isSecondary: false,
                         label: 'Approve',
-                        onPressed: widget.onAdd,
+                        onPressed: widget.onApprove,
                       ),
                     ],
                   ),
